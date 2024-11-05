@@ -1,7 +1,5 @@
 #include <iostream>
 #include <string>
-#include <vector>
-#include <iomanip>
 using namespace std;
 
 class Student {
@@ -107,21 +105,21 @@ public:
     string getName() const { return name; }
 };
 
-void showTopStudents(const vector<Student>& students, int count) {
-    vector<Student> sorted_students = students;
-    for (size_t i = 0; i < sorted_students.size() - 1; ++i) {
-        for (size_t j = 0; j < sorted_students.size() - i - 1; ++j) {
-            if (sorted_students[j].getAverageMarks() < sorted_students[j + 1].getAverageMarks()) {
-                swap(sorted_students[j], sorted_students[j + 1]);
+void showTopStudents(Student students[], int n, int count) {
+    // Simple bubble sort to sort students based on average marks
+    for (int i = 0; i < n - 1; ++i) {
+        for (int j = 0; j < n - i - 1; ++j) {
+            if (students[j].getAverageMarks() < students[j + 1].getAverageMarks()) {
+                swap(students[j], students[j + 1]);
             }
         }
     }
 
     cout << "Top " << count << " Students (by average marks):\n";
-    for (int i = 0; i < count && i < sorted_students.size(); ++i) {
-        cout << "Roll No: " << sorted_students[i].getRollNumber() << ", Name: " 
-             << sorted_students[i].getName() << ", Average Marks: " 
-             << fixed << setprecision(2) << sorted_students[i].getAverageMarks() << endl;
+    for (int i = 0; i < count && i < n; ++i) {
+        cout << "Roll No: " << students[i].getRollNumber() << ", Name: " 
+             << students[i].getName() << ", Average Marks: " 
+             << students[i].getAverageMarks() << endl;
     }
 }
 
@@ -136,7 +134,7 @@ int main() {
     }
     cin.ignore();
 
-    vector<Student> students(n); 
+    Student students[100]; // Assuming a maximum of 100 students
 
     for (int i = 0; i < n; ++i) {
         cout << "Enter details for student " << i + 1 << ":\n";
@@ -144,20 +142,20 @@ int main() {
     }
 
     cout << "Details of all students:\n";
-    for (const auto& student : students) {
-        student.showDetails();
+    for (int i = 0; i < n; ++i) {
+        students[i].showDetails();
     }
 
     cout << "Attendance of all students:\n";
-    for (const auto& student : students) {
-        student.printAttendance();
+    for (int i = 0; i < n; ++i) {
+        students[i].printAttendance();
     }
 
     cout << "Students with attendance shortage (< 75%):\n";
     bool shortage = false;
-    for (const auto& student : students) {
-        if (student.hasAttendanceShortage()) {
-            cout << "Roll No: " << student.getRollNumber() << ", Name: " << student.getName() << endl;
+    for (int i = 0; i < n; ++i) {
+        if (students[i].hasAttendanceShortage()) {
+            cout << "Roll No: " << students[i].getRollNumber() << ", Name: " << students[i].getName() << endl;
             shortage = true;
         }
     }
@@ -165,15 +163,15 @@ int main() {
         cout << "No students with attendance shortage.\n";
     }
 
-    showTopStudents(students, 5); 
+    showTopStudents(students, n, 5); 
 
     cout << "Students with 90% or more average marks:\n";
     bool highAverage = false;
-    for (const auto& student : students) {
-        if (student.hasHighAverageMarks()) {
-            cout << "Roll No: " << student.getRollNumber() << ", Name: " 
-                 << student.getName() << ", Average Marks: " 
-                 << fixed << setprecision(2) << student.getAverageMarks() << endl;
+    for (int i = 0; i < n; ++i) {
+        if (students[i].hasHighAverageMarks()) {
+            cout << "Roll No: " << students[i].getRollNumber() << ", Name: " 
+                 << students[i].getName() << ", Average Marks: " 
+                 << students[i].getAverageMarks() << endl;
             highAverage = true;
         }
     }
