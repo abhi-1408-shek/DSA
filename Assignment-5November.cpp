@@ -1,5 +1,7 @@
 #include <iostream>
 #include <string>
+#include <vector>
+#include <iomanip>
 using namespace std;
 
 class Student {
@@ -11,7 +13,7 @@ private:
     int semester;
     int roll_number;
     int classes_attended;
-    const int total_classes = 50;
+    static const int total_classes = 50;
     float marks[5];
 
 public:
@@ -42,30 +44,47 @@ public:
 
         cout << "Enter student's age: ";
         cin >> age;
+        while (age <= 0) {
+            cout << "Please enter a valid age: ";
+            cin >> age;
+        }
 
-        cout << "Enter semester: ";
+        cout << "Enter semester (1-8): ";
         cin >> semester;
+        while (semester < 1 || semester > 8) {
+            cout << "Please enter a valid semester (1-8): ";
+            cin >> semester;
+        }
 
         cout << "Enter roll number: ";
         cin >> roll_number;
 
         cout << "Enter number of classes attended (out of 50): ";
         cin >> classes_attended;
+        while (classes_attended < 0 || classes_attended > total_classes) {
+            cout << "Please enter a valid number of classes attended: ";
+            cin >> classes_attended;
+        }
 
         cout << "Enter marks for 5 subjects:\n";
         for (int i = 0; i < 5; ++i) {
             cout << "Subject " << i + 1 << ": ";
             cin >> marks[i];
+            while (marks[i] < 0 || marks[i] > 100) {
+                cout << "Please enter valid marks (0-100) for Subject " << i + 1 << ": ";
+                cin >> marks[i];
+            }
         }
         cin.ignore();
     }
 
     float getAttendancePercentage() const {
-        return (float)classes_attended / total_classes * 100;
+        return (static_cast<float>(classes_attended) / total_classes) * 100;
     }
 
     void printAttendance() const {
-        cout << "Roll No: " << roll_number << ", Name: " << name << ", Attendance: " << getAttendancePercentage() << "%\n";
+        cout << "Roll No: " << roll_number << ", Name: " << name 
+             << ", Attendance: " << getAttendancePercentage() << "%\n";
     }
 
     bool hasAttendanceShortage() const {
@@ -88,19 +107,21 @@ public:
     string getName() const { return name; }
 };
 
-void showTop5(Student students[], int n) {
-    for (int i = 0; i < n - 1; ++i) {
-        for (int j = 0; j < n - i - 1; ++j) {
-            if (students[j].getAverageMarks() < students[j + 1].getAverageMarks()) {
-                swap(students[j], students[j + 1]);
+void showTopStudents(const vector<Student>& students, int count) {
+    vector<Student> sorted_students = students;
+    for (size_t i = 0; i < sorted_students.size() - 1; ++i) {
+        for (size_t j = 0; j < sorted_students.size() - i - 1; ++j) {
+            if (sorted_students[j].getAverageMarks() < sorted_students[j + 1].getAverageMarks()) {
+                swap(sorted_students[j], sorted_students[j + 1]);
             }
         }
     }
 
-    cout << "Top 5 Students (by average marks):\n";
-    for (int i = 0; i < 5 && i < n; ++i) {
-        cout << "Roll No: " << students[i].getRollNumber() << ", Name: " << students[i].getName()
-             << ", Average Marks: " << students[i].getAverageMarks() << endl;
+    cout << "Top " << count << " Students (by average marks):\n";
+    for (int i = 0; i < count && i < sorted_students.size(); ++i) {
+        cout << "Roll No: " << sorted_students[i].getRollNumber() << ", Name: " 
+             << sorted_students[i].getName() << ", Average Marks: " 
+             << fixed << setprecision(2) << sorted_students[i].getAverageMarks() << endl;
     }
 }
 
@@ -109,9 +130,13 @@ int main() {
 
     cout << "Enter number of students: ";
     cin >> n;
+    while (n <= 0) {
+        cout << "Please enter a valid number of students: ";
+        cin >> n;
+    }
     cin.ignore();
 
-    Student students[100];
+    vector<Student> students(n); 
 
     for (int i = 0; i < n; ++i) {
         cout << "Enter details for student " << i + 1 << ":\n";
@@ -119,20 +144,20 @@ int main() {
     }
 
     cout << "Details of all students:\n";
-    for (int i = 0; i < n; ++i) {
-        students[i].showDetails();
+    for (const auto& student : students) {
+        student.showDetails();
     }
 
     cout << "Attendance of all students:\n";
-    for (int i = 0; i < n; ++i) {
-        students[i].printAttendance();
+    for (const auto& student : students) {
+        student.printAttendance();
     }
 
     cout << "Students with attendance shortage (< 75%):\n";
     bool shortage = false;
-    for (int i = 0; i < n; ++i) {
-        if (students[i].hasAttendanceShortage()) {
-            cout << "Roll No: " << students[i].getRollNumber() << ", Name: " << students[i].getName() << endl;
+    for (const auto& student : students) {
+        if (student.hasAttendanceShortage()) {
+            cout << "Roll No: " << student.getRollNumber() << ", Name: " << student.getName() << endl;
             shortage = true;
         }
     }
@@ -140,14 +165,15 @@ int main() {
         cout << "No students with attendance shortage.\n";
     }
 
-    showTop5(students, n);
+    showTopStudents(students, 5); 
 
     cout << "Students with 90% or more average marks:\n";
     bool highAverage = false;
-    for (int i = 0; i < n; ++i) {
-        if (students[i].hasHighAverageMarks()) {
-            cout << "Roll No: " << students[i].getRollNumber() << ", Name: " << students[i].getName()
-                 << ", Average Marks: " << students[i].getAverageMarks() << endl;
+    for (const auto& student : students) {
+        if (student.hasHighAverageMarks()) {
+            cout << "Roll No: " << student.getRollNumber() << ", Name: " 
+                 << student.getName() << ", Average Marks: " 
+                 << fixed << setprecision(2) << student.getAverageMarks() << endl;
             highAverage = true;
         }
     }
