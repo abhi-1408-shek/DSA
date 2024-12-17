@@ -1,42 +1,57 @@
-#include <iostream>
+#include<iostream>
 using namespace std;
 
-// Base Class
-class Employee
-{
-public:
-    int id;
-    float salary;
-    Employee(int inpId)
-    {
-        id = inpId;
-        salary = 34.0;
-    }
-    Employee() {}
+class Student{
+    protected:
+        int roll_no;
+    public:
+        void set_number(int a){
+            roll_no = a;
+        }
+        void print_number(void){
+            cout<<"Your roll no is "<< roll_no<<endl;
+        }
 };
 
-// Creating a Programmer class derived from Employee Base class
-class Programmer : public Employee
-{
-public:
-    int languageCode;
-    Programmer(int inpId)
-    {
-        id = inpId;
-        languageCode = 9;
-    }
-    void getData(){
-        cout<<id<<endl;
-    }
+class Test : public Student{
+    protected:
+        float maths, physics;
+        public:
+            void set_marks(float m1, float m2){
+                maths = m1;
+                physics = m2;
+            }
+
+            void print_marks(void){
+                cout << "You result is here: "<<endl
+                     << "Maths: "<< maths<<endl
+                     << "Physics: "<< physics<<endl;
+            }
 };
-int main()
-{
-    Employee harry(1), rohan(2);
-    cout << harry.salary << endl;
-    cout << rohan.salary << endl;
-    Programmer skillF(10);
-    cout << skillF.languageCode<<endl;
-    cout << skillF.id<<endl;
-    skillF.getData();
-    return 0;
-}
+
+class Sports: public Student{
+    protected:
+        float score;
+    public:
+        void set_score(float sc){
+            score = sc;
+        }
+
+        void print_score(void){
+            cout<<"Your PT score is "<<score<<endl;
+        }
+
+};
+
+class Result : public Test, public Sports{
+    private:
+        float total;
+    public:
+        void display(void){
+            total = maths + physics + score;
+
+            print_marks();
+            print_score();
+            cout<< "Your total score is: "<<total<<endl;
+        }
+};
