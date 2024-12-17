@@ -49,7 +49,6 @@ class Result : public Test, public Sports{
     public:
         void display(void){
             total = maths + physics + score;
-
             print_marks();
             print_score();
             cout<< "Your total score is: "<<total<<endl;
