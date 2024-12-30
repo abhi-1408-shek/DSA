@@ -121,3 +121,97 @@
 
 
 /*************************************************QUESTION-6************************************************/
+
+//FLOYD'S TRIANGLE PATTERN
+// 1 
+// 2 3 
+// 4 5 6 
+// 7 8 9 10 
+
+
+// #include<iostream>
+// using namespace std;
+// int main()
+// {
+//   int n=4;
+//   int num =1;
+//   for(int i=1;i<n+1;i++){
+//     for(int j=0;j<i;j++){
+//         cout<<num<<" ";
+//         num++;
+//     }
+    
+//     cout<<endl;
+//   }
+//  return 0;
+// }
+
+
+/*************************************************QUESTION-7************************************************/
+
+//FLOYD'S TRIANGLE PATTERN(CHARACTER VERSION)
+// A 
+// B C 
+// D E F 
+// G H I J 
+
+// #include<iostream>
+// using namespace std;
+// int main()
+// {
+//     char alpha = 'A';
+//     int n = 4;
+//     for(int i=0;i<n;i++){
+//         for(int j=i;j>=0;j--){
+//             cout<< alpha<<" ";
+//             alpha++;
+//         }
+//         cout<<endl;
+//     }
+//  return 0;
+// }
+
+/*************************************************QUESTION-8************************************************/
+
+//REVERSE TRIANGLE PATTERN(CHARACTER VERSION)
+// A 
+// B A 
+// C B A 
+// D C B A 
+
+// #include<iostream>
+// using namespace std;
+// int main()
+// {
+//     char c='A';
+//     int n = 4;
+//     for(int i=0;i<n;i++){
+//         for(char j=c;j>='A';j--){
+//             cout<<j<<" ";
+//         }
+//         c++;
+//         cout<<endl;
+//     }
+//  return 0;
+// }
+
+
+/*************************************************QUESTION-9************************************************/
+
+//INVERTED TRIANGLE PATTERN
+
+#include<iostream>
+using namespace std;
+int main()
+{
+    int n=4;
+    int num =1;
+    for(int i=0;i<n;i++){
+         for(int j=n; j>i; j-- ){
+            cout<<num<<" ";
+        }
+        cout<<endl;
+        num++;
+    }
+ return 0;
+}
